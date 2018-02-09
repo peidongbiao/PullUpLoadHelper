@@ -31,7 +31,7 @@ public class DefaultPullLoadFooter extends FrameLayout implements PullUpLoadFoot
 
     public DefaultPullLoadFooter(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mView  = LayoutInflater.from(context).inflate(R.layout.around_widget_defualt_pul_load_footer,this);
+        mView  = LayoutInflater.from(context).inflate(R.layout.defualt_pull_load_footer,this);
         mPbLoading = (ProgressBar) findViewById(R.id.around_pb_loading);
         mTvText = (TextView) findViewById(R.id.around_tv_text);
         //初始化时隐藏
@@ -58,20 +58,20 @@ public class DefaultPullLoadFooter extends FrameLayout implements PullUpLoadFoot
     public void setLoading() {
         setVisibility(VISIBLE);
         mPbLoading.setVisibility(VISIBLE);
-        mTvText.setText(R.string.around_loading);
+        mTvText.setText(R.string.loading);
     }
 
     @Override
     public void setLoaded() {
         setVisibility(VISIBLE);
         mPbLoading.setVisibility(GONE);
-        mTvText.setText(R.string.around_loaded);
+        mTvText.setText(R.string.loaded);
     }
 
     @Override
     public void setComplete() {
         setVisibility(VISIBLE);
         mPbLoading.setVisibility(GONE);
-        mTvText.setText(R.string.around_no_more_data);
+        mTvText.setText(R.string.no_more_data);
     }
 }

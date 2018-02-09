@@ -46,7 +46,7 @@ public class PullUpLoadHelper extends RecyclerView.OnScrollListener implements P
         mLayoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
         mOnPullUpLoadListener = onPullUpLoadListener;
 
-        mState = State.EMPTY;
+        mState = recyclerView.getAdapter().getItemCount() == 0 ? State.EMPTY : State.LOADED;
         //默认footer
         this.setLoadFooter(new DefaultPullLoadFooter(mContext));
         mRecyclerView.addOnScrollListener(this);

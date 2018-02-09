@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="aroundTextColorPrimary">#2d2d2d</color>
+    <color name="textColorPrimary">#2d2d2d</color>
 </resources>
