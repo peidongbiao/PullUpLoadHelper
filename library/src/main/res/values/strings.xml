@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">library</string>
+    <string name="around_loading">正在加载...</string>
+    <string name="around_loaded">已加载</string>
+    <string name="around_no_more_data">没有更多数据</string>
+</resources>
