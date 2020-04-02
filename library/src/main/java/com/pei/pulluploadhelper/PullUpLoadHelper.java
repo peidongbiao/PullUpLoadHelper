@@ -1,15 +1,17 @@
 package com.pei.pulluploadhelper;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-/**RecyclerView 可以加载更多的helper。在设置完Adapter和LayoutManager后使用，只支持LinearLayoutManger和GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+/**
+ * RecyclerView 可以加载更多的helper。在设置完Adapter和LayoutManager后使用，只支持LinearLayoutManger和GridLayoutManager
  * Created by peidongbiao on 2017/9/5.
  */
 
-public class PullUpLoadHelper extends RecyclerView.OnScrollListener implements PullUpLoad{
+public class PullUpLoadHelper extends RecyclerView.OnScrollListener implements PullUpLoad {
 
     private Context mContext;
     private RecyclerView mRecyclerView;
@@ -22,20 +24,20 @@ public class PullUpLoadHelper extends RecyclerView.OnScrollListener implements P
     private int mLastVisibleItem;
     private int mTotalItemCount;
 
-    public PullUpLoadHelper(RecyclerView recyclerView,OnPullUpLoadListener onPullUpLoadListener) {
-        if(recyclerView == null){
+    public PullUpLoadHelper(RecyclerView recyclerView, OnPullUpLoadListener onPullUpLoadListener) {
+        if (recyclerView == null) {
             throw new NullPointerException("RecyclerView is null!");
         }
-        if(recyclerView.getAdapter() == null){
+        if (recyclerView.getAdapter() == null) {
             throw new NullPointerException("RecyclerView's adapter is null!");
         }
-        if(recyclerView.getLayoutManager() == null){
+        if (recyclerView.getLayoutManager() == null) {
             throw new NullPointerException("RecyclerView's layoutManager is null!");
         }
-        if(!(recyclerView.getLayoutManager() instanceof LinearLayoutManager)){
+        if (!(recyclerView.getLayoutManager() instanceof LinearLayoutManager)) {
             throw new IllegalArgumentException("Only supports linearLayoutManager!");
         }
-        if(onPullUpLoadListener == null){
+        if (onPullUpLoadListener == null) {
             throw new NullPointerException("OnPullUpLoadListener is null!");
         }
 
@@ -54,8 +56,10 @@ public class PullUpLoadHelper extends RecyclerView.OnScrollListener implements P
 
     @Override
     public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-        if(newState == RecyclerView.SCROLL_STATE_IDLE){
-            if(mLastVisibleItem == mTotalItemCount - 1 && mState != PullUpLoad.State.LOADING && mState != PullUpLoad.State.COMPLETE && mState != PullUpLoad.State.EMPTY){
+        mLastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
+        mTotalItemCount = mLayoutManager.getItemCount();
+        if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+            if (mLastVisibleItem == mTotalItemCount - 1 && mState != PullUpLoad.State.LOADING && mState != PullUpLoad.State.COMPLETE && mState != PullUpLoad.State.EMPTY) {
                 setLoading();
                 mOnPullUpLoadListener.onLoad();
             }
@@ -71,14 +75,14 @@ public class PullUpLoadHelper extends RecyclerView.OnScrollListener implements P
 
     @Override
     public <T extends View & PullUpLoadFooter> void setLoadFooter(T loadFooter) {
-        if(loadFooter == null){
+        if (loadFooter == null) {
             throw new NullPointerException("loadFooter is null");
         }
-        if(mLoadFooter != null){
+        if (mLoadFooter != null) {
             mHeaderFooterRecyclerAdapterWrapper.removeFooterView((View) mLoadFooter);
         }
         this.mLoadFooter = loadFooter;
-        mHeaderFooterRecyclerAdapterWrapper.addFootView((View)mLoadFooter);
+        mHeaderFooterRecyclerAdapterWrapper.addFootView((View) mLoadFooter);
     }
 
     @Override
@@ -88,33 +92,34 @@ public class PullUpLoadHelper extends RecyclerView.OnScrollListener implements P
     }
 
     @Override
-    public void setLoading(){
+    public void setLoading() {
         mState = PullUpLoad.State.LOADING;
         mLoadFooter.setLoading();
     }
 
     @Override
-    public void setLoaded(){
+    public void setLoaded() {
         mState = PullUpLoad.State.LOADED;
         mLoadFooter.setLoaded();
     }
 
     @Override
-    public void setComplete(){
+    public void setComplete() {
         mState = PullUpLoad.State.COMPLETE;
         mLoadFooter.setComplete();
     }
 
-    private HeaderFooterRecyclerAdapterWrapper wrapAdapter(RecyclerView.Adapter adapter){
+    private HeaderFooterRecyclerAdapterWrapper wrapAdapter(RecyclerView.Adapter adapter) {
         HeaderFooterRecyclerAdapterWrapper adapterWrapper;
-        if(adapter instanceof HeaderFooterRecyclerAdapterWrapper){
+        if (adapter instanceof HeaderFooterRecyclerAdapterWrapper) {
             adapterWrapper = (HeaderFooterRecyclerAdapterWrapper) adapter;
-        }else {
+        } else {
             adapterWrapper = new HeaderFooterRecyclerAdapterWrapper(adapter);
         }
         return adapterWrapper;
     }
 
     @Override
-    public void setOnLoadListener(OnPullUpLoadListener onLoadListener) {}
+    public void setOnLoadListener(OnPullUpLoadListener onLoadListener) {
+    }
 }
