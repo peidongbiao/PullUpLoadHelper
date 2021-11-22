@@ -11,12 +11,12 @@
         android:id="@+id/btn_pull_up_load"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="pull up load"/>
+        android:text="下拉加载"/>
 
     <Button
         android:id="@+id/bidirectional_load"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="bidirectional load"/>
+        android:text="双向加载"/>
 
 </LinearLayout>
