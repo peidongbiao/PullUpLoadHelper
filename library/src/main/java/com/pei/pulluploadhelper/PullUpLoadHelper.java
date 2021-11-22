@@ -17,9 +17,9 @@ public class PullUpLoadHelper extends RecyclerView.OnScrollListener implements P
 
     protected RecyclerView mRecyclerView;
 
-    protected LoadingIndicator mLoadFooter;
+    protected LoadingIndicator mEndIndicator;
 
-    protected @PullUpLoad.State int mState;
+    protected @PullUpLoad.State int mEndLoadingState = STATE_INIT;
 
     protected HeaderFooterRecyclerAdapterWrapper mHeaderFooterRecyclerAdapterWrapper;
 
@@ -27,8 +27,9 @@ public class PullUpLoadHelper extends RecyclerView.OnScrollListener implements P
 
     protected OnPullUpLoadListener mOnPullUpLoadListener;
 
-    protected int mLastVisibleItem;
     protected int mTotalItemCount;
+
+    protected int mLastVisibleItem;
 
     public PullUpLoadHelper(RecyclerView recyclerView, OnPullUpLoadListener onPullUpLoadListener) {
         if (recyclerView == null) {
@@ -54,9 +55,9 @@ public class PullUpLoadHelper extends RecyclerView.OnScrollListener implements P
         mLayoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
         mOnPullUpLoadListener = onPullUpLoadListener;
 
-        mState = recyclerView.getAdapter().getItemCount() == 0 ? PullUpLoad.STATE_EMPTY : PullUpLoad.STATE_LOADED;
+        mEndLoadingState = recyclerView.getAdapter().getItemCount() == 0 ? PullUpLoad.STATE_EMPTY : PullUpLoad.STATE_LOADED;
         //默认footer
-        this.setLoadFooter(new DefaultLoadingIndicator(mContext));
+        this.setEndIndicator(new DefaultLoadingIndicator(mContext));
         mRecyclerView.addOnScrollListener(this);
     }
 
@@ -72,7 +73,7 @@ public class PullUpLoadHelper extends RecyclerView.OnScrollListener implements P
     }
 
     protected boolean isReachToEnd() {
-        return mLastVisibleItem == mTotalItemCount - 1 && mState != PullUpLoad.STATE_LOADING && mState != PullUpLoad.STATE_COMPLETE && mState != PullUpLoad.STATE_EMPTY;
+        return mLastVisibleItem == mTotalItemCount - 1 && mEndLoadingState != PullUpLoad.STATE_LOADING && mEndLoadingState != PullUpLoad.STATE_COMPLETE && mEndLoadingState != PullUpLoad.STATE_EMPTY;
     }
 
     protected void onScrollToEnd() {
@@ -88,39 +89,47 @@ public class PullUpLoadHelper extends RecyclerView.OnScrollListener implements P
 
 
     @Override
-    public <T extends View & LoadingIndicator> void setLoadFooter(T loadFooter) {
-        if (loadFooter == null) {
-            throw new NullPointerException("loadFooter is null");
+    public <T extends View & LoadingIndicator> void setEndIndicator(T endIndicator) {
+        if (endIndicator == null) {
+            throw new NullPointerException("endIndicator is null");
         }
-        if (mLoadFooter != null) {
-            mHeaderFooterRecyclerAdapterWrapper.removeFooterView((View) mLoadFooter);
+        if (mEndIndicator != null) {
+            mHeaderFooterRecyclerAdapterWrapper.removeFooterView((View) mEndIndicator);
         }
-        this.mLoadFooter = loadFooter;
-        mHeaderFooterRecyclerAdapterWrapper.addFootView((View) mLoadFooter);
+        this.mEndIndicator = endIndicator;
+        mHeaderFooterRecyclerAdapterWrapper.addFootView((View) mEndIndicator);
     }
 
     @Override
     public void setEmpty() {
-        mState = PullUpLoad.STATE_EMPTY;
-        mLoadFooter.setEmpty();
+        mEndLoadingState = PullUpLoad.STATE_EMPTY;
+        mEndIndicator.setEmpty();
     }
 
     @Override
     public void setLoading() {
-        mState = PullUpLoad.STATE_LOADING;
-        mLoadFooter.setLoading();
+        mEndLoadingState = PullUpLoad.STATE_LOADING;
+        mEndIndicator.setLoading();
     }
 
     @Override
     public void setLoaded() {
-        mState = PullUpLoad.STATE_LOADED;
-        mLoadFooter.setLoaded();
+        mEndLoadingState = PullUpLoad.STATE_LOADED;
+        mEndIndicator.setLoaded();
     }
 
     @Override
     public void setComplete() {
-        mState = PullUpLoad.STATE_COMPLETE;
-        mLoadFooter.setComplete();
+        mEndLoadingState = PullUpLoad.STATE_COMPLETE;
+        mEndIndicator.setComplete();
+    }
+
+    public int getHeaderCount() {
+        return mHeaderFooterRecyclerAdapterWrapper.getHeaderCount();
+    }
+
+    public int getFooterCount() {
+        return mHeaderFooterRecyclerAdapterWrapper.getFooterCount();
     }
 
     private HeaderFooterRecyclerAdapterWrapper wrapAdapter(RecyclerView.Adapter<?> adapter) {

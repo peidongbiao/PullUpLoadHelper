@@ -1,6 +1,7 @@
 package com.pei.app;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,23 +16,24 @@ import java.util.List;
  * Created by peidongbiao on 2018/2/9.
  */
 
-public class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private static final String TAG = "Adapter";
 
     private Context mContext;
-    private List<String> mData;
+    private List<Data> mData;
 
     public Adapter(Context context) {
-        this(context,null);
+        this(context, null);
     }
 
-    public Adapter(Context context, List<String> data) {
+    public Adapter(Context context, List<Data> data) {
         mContext = context;
-        mData = data == null ? new ArrayList<String>() : data;
+        mData = data == null ? new ArrayList<Data>() : data;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_recycler_view,parent,false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_recycler_view, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
@@ -39,8 +41,10 @@ public class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
-        String str = mData.get(position);
-        viewHolder.mTextView.setText(str);
+        Data data = mData.get(position);
+        viewHolder.mTextView.setText(data.getText());
+
+        Log.d(TAG, "onBindViewHolder: " + position + ", " + data.getText());
     }
 
     @Override
@@ -48,20 +52,31 @@ public class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         return mData.size();
     }
 
-    public void refresh(List<String> data){
+
+    @Override
+    public long getItemId(int position) {
+        return super.getItemId(position);
+    }
+
+    public void refresh(List<Data> data) {
         this.mData.clear();
         this.mData.addAll(data);
         this.notifyDataSetChanged();
     }
 
-    public void addItems(List<String> data){
-        int start = mData.size();
-        mData.addAll(data);
-        this.notifyItemRangeInserted(start,data.size());
+    public void addItems(List<Data> data) {
+        int index = mData.size();
+        addItems(index, data);
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    public void addItems(int index, List<Data> data) {
+        mData.addAll(index, data);
+        this.notifyItemRangeInserted(index, data.size());
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
         private TextView mTextView;
+
         public ViewHolder(View itemView) {
             super(itemView);
             mTextView = itemView.findViewById(R.id.text);

@@ -1,104 +1,34 @@
 package com.pei.app;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
+import android.view.View;
 
-
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import com.pei.pulluploadhelper.PullUpLoad;
-import com.pei.pulluploadhelper.PullUpLoadHelper;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private RecyclerView mRecyclerView;
-
-    private Handler mHandler;
-    private Adapter mAdapter;
-    private PullUpLoadHelper mPullUpLoadHelper;
-    private int mPage;
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
-        mRecyclerView = findViewById(R.id.recycler_view);
 
-        mHandler = new Handler();
-        mAdapter = new Adapter(this,getData());
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setAdapter(mAdapter);
-
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        findViewById(R.id.btn_pull_up_load).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRefresh() {
-                refresh();
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, PullUploadActivity.class);
+                startActivity(intent);
             }
         });
 
-        mPullUpLoadHelper = new PullUpLoadHelper(mRecyclerView, new PullUpLoad.OnPullUpLoadListener() {
+        findViewById(R.id.bidirectional_load).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onLoad() {
-                getNextPage();
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, BiDirectionLoadActivity.class);
+                startActivity(intent);
             }
         });
-
-        //refresh();
-    }
-
-    private void refresh(){
-        mSwipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mSwipeRefreshLayout.setRefreshing(true);
-            }
-        });
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mPage = 1;
-                List<String> data = getData();
-                mAdapter.refresh(data);
-                mSwipeRefreshLayout.setRefreshing(false);
-                mPullUpLoadHelper.setLoaded();
-            }
-        },1000);
-    }
-
-    private void getNextPage(){
-        mPullUpLoadHelper.setLoading();
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mPage++;
-                List<String> data = getData();
-                mAdapter.addItems(data);
-                if(mPage == 5){
-                    mPullUpLoadHelper.setComplete();
-                }else {
-                    mPullUpLoadHelper.setLoaded();
-                }
-            }
-        },1000);
-    }
-
-    private List<String> getData(){
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < 30; i++) {
-            list.add(String.format(Locale.getDefault(),"Text: %d",i));
-        }
-        return list;
     }
 }

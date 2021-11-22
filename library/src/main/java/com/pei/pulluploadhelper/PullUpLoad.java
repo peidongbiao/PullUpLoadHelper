@@ -12,20 +12,20 @@ import java.lang.annotation.Target;
 /**
  * Created by peidongbiao on 2017/9/1.
  */
-
 public interface PullUpLoad {
 
-    int STATE_EMPTY = 0;
-    int STATE_LOADING = 1;
-    int STATE_LOADED = 2;
-    int STATE_COMPLETE = 3;
+    int STATE_INIT = 0;
+    int STATE_EMPTY = 1;
+    int STATE_LOADING = 2;
+    int STATE_LOADED = 3;
+    int STATE_COMPLETE = 4;
 
-    @IntDef({STATE_EMPTY, STATE_LOADING, STATE_LOADED, STATE_COMPLETE})
+    @IntDef({STATE_INIT, STATE_EMPTY, STATE_LOADING, STATE_LOADED, STATE_COMPLETE})
     @Retention(RetentionPolicy.CLASS)
     @Target({ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD, ElementType.LOCAL_VARIABLE})
     @interface State{}
 
-    <T extends View & LoadingIndicator> void setLoadFooter(T loadFooter);
+    <T extends View & LoadingIndicator> void setEndIndicator(T loadFooter);
 
     void setEmpty();
 
@@ -38,6 +38,7 @@ public interface PullUpLoad {
     void setOnLoadListener(OnPullUpLoadListener onLoadListener);
 
     interface OnPullUpLoadListener {
+
         void onLoad();
     }
 }

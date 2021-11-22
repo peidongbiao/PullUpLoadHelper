@@ -23,16 +23,16 @@ public class DefaultLoadingIndicator extends FrameLayout implements LoadingIndic
     protected TextView mTvText;
 
     public DefaultLoadingIndicator(Context context) {
-        this(context,null);
+        this(context, null);
     }
 
     public DefaultLoadingIndicator(Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs,0);
+        this(context, attrs, 0);
     }
 
     public DefaultLoadingIndicator(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mView  = LayoutInflater.from(context).inflate(R.layout.defualt_pull_load_footer,this);
+        mView = LayoutInflater.from(context).inflate(R.layout.defualt_pull_load_footer, this);
         mPbLoading = (ProgressBar) findViewById(R.id.around_pb_loading);
         mTvText = (TextView) findViewById(R.id.around_tv_text);
         //初始化时隐藏
@@ -43,7 +43,7 @@ public class DefaultLoadingIndicator extends FrameLayout implements LoadingIndic
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         ViewGroup.LayoutParams layoutParams = getLayoutParams();
-        if(layoutParams != null){
+        if (layoutParams != null) {
             layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
             layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
             setLayoutParams(layoutParams);

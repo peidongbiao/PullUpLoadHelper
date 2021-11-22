@@ -18,6 +18,15 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <activity android:name=".PullUploadActivity">
+
+        </activity>
+
+        <activity android:name=".BiDirectionLoadActivity">
+            
+        </activity>
+
     </application>
 
 </manifest>

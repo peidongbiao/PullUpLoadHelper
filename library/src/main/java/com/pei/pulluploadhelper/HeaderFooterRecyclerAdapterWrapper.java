@@ -21,7 +21,7 @@ public class HeaderFooterRecyclerAdapterWrapper extends RecyclerView.Adapter<Rec
     private RecyclerView.Adapter mTargetAdapter;
 
     public HeaderFooterRecyclerAdapterWrapper(RecyclerView.Adapter targetAdapter) {
-        if(targetAdapter == null){
+        if (targetAdapter == null) {
             throw new NullPointerException("target adapter is null");
         }
         mTargetAdapter = targetAdapter;
@@ -77,7 +77,7 @@ public class HeaderFooterRecyclerAdapterWrapper extends RecyclerView.Adapter<Rec
         } else if (mFootViews.get(viewType) != null) {
             return new HeaderFooterViewHolder(mFootViews.get(viewType));
         }
-        return mTargetAdapter.onCreateViewHolder(parent,viewType);
+        return mTargetAdapter.onCreateViewHolder(parent, viewType);
     }
 
     @SuppressWarnings("unchecked")
@@ -86,7 +86,7 @@ public class HeaderFooterRecyclerAdapterWrapper extends RecyclerView.Adapter<Rec
         if (isHeaderView(position) || isFooterView(position)) {
             return;
         }
-        mTargetAdapter.onBindViewHolder(holder,position - getHeaderCount());
+        mTargetAdapter.onBindViewHolder(holder, position - getHeaderCount());
     }
 
     private boolean isHeaderView(int position) {
@@ -102,13 +102,13 @@ public class HeaderFooterRecyclerAdapterWrapper extends RecyclerView.Adapter<Rec
         this.notifyDataSetChanged();
     }
 
-    public void removeHeaderView(View view){
+    public void removeHeaderView(View view) {
         int index = mHeaderViews.indexOfValue(view);
         mHeaderViews.removeAt(index);
         this.notifyDataSetChanged();
     }
 
-    public void removeHeaderView(int position){
+    public void removeHeaderView(int position) {
         mHeaderViews.removeAt(position);
         this.notifyDataSetChanged();
     }
@@ -118,34 +118,34 @@ public class HeaderFooterRecyclerAdapterWrapper extends RecyclerView.Adapter<Rec
         this.notifyDataSetChanged();
     }
 
-    public void removeFooterView(View view){
+    public void removeFooterView(View view) {
         int index = mFootViews.indexOfValue(view);
         mFootViews.removeAt(index);
         this.notifyDataSetChanged();
     }
 
-    public View getHeaderView(int position){
+    public View getHeaderView(int position) {
         return mHeaderViews.get(position);
     }
 
-    public View getFooterView(int position){
+    public View getFooterView(int position) {
         return mFootViews.get(position);
     }
 
-    public boolean conatinsHeaderView(View view){
+    public boolean containsHeaderView(View view) {
         for (int i = 0; i < mHeaderViews.size(); i++) {
             View header = mHeaderViews.get(i);
-            if(header.equals(view)){
+            if (header.equals(view)) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean containsFooterView(View view){
+    public boolean containsFooterView(View view) {
         for (int i = 0; i < mFootViews.size(); i++) {
             View footer = mFootViews.get(i);
-            if(footer.equals(view)){
+            if (footer.equals(view)) {
                 return true;
             }
         }
@@ -171,6 +171,7 @@ public class HeaderFooterRecyclerAdapterWrapper extends RecyclerView.Adapter<Rec
 
     /**
      * 处理GridLayoutManager
+     *
      * @param recyclerView
      */
     @Override
@@ -199,6 +200,7 @@ public class HeaderFooterRecyclerAdapterWrapper extends RecyclerView.Adapter<Rec
 
     /**
      * 处理StaggeredGridLayoutManager
+     *
      * @param holder
      */
     @Override
