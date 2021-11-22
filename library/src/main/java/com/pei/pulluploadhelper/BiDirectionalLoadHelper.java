@@ -7,13 +7,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class BiDirectionalLoadHelper extends PullUpLoadHelper implements BiDirectionalLoad {
 
-    private OnPullDownLoadListener mOnPullDownLoadListener;
+    private OnLoadListener mOnPullDownLoadListener;
     private LoadingIndicator mStartIndicator;
 
     private int mStartLoadingState;
     private int mFirstVisibleItem;
 
-    public BiDirectionalLoadHelper(RecyclerView recyclerView, OnPullUpLoadListener onPullUpLoadListener, OnPullDownLoadListener onPullDownLoadListener) {
+    public BiDirectionalLoadHelper(RecyclerView recyclerView, OnLoadListener onPullUpLoadListener, OnLoadListener onPullDownLoadListener) {
         super(recyclerView, onPullUpLoadListener);
         this.mOnPullDownLoadListener = onPullDownLoadListener;
 

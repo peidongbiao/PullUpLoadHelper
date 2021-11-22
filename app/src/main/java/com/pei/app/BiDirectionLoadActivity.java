@@ -47,12 +47,12 @@ public class BiDirectionLoadActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
-        mBiDirectionalLoadHelper = new BiDirectionalLoadHelper(mRecyclerView, new PullUpLoad.OnPullUpLoadListener() {
+        mBiDirectionalLoadHelper = new BiDirectionalLoadHelper(mRecyclerView, new PullUpLoad.OnLoadListener() {
             @Override
             public void onLoad() {
                 loadNextPage();
             }
-        }, new BiDirectionalLoadHelper.OnPullDownLoadListener() {
+        }, new PullUpLoad.OnLoadListener() {
             @Override
             public void onLoad() {
                 loadPrePage();

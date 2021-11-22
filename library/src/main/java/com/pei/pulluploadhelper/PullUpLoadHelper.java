@@ -25,13 +25,13 @@ public class PullUpLoadHelper extends RecyclerView.OnScrollListener implements P
 
     protected LinearLayoutManager mLayoutManager;
 
-    protected OnPullUpLoadListener mOnPullUpLoadListener;
+    protected OnLoadListener mOnLoadListener;
 
     protected int mTotalItemCount;
 
     protected int mLastVisibleItem;
 
-    public PullUpLoadHelper(RecyclerView recyclerView, OnPullUpLoadListener onPullUpLoadListener) {
+    public PullUpLoadHelper(RecyclerView recyclerView, OnLoadListener onPullUpLoadListener) {
         if (recyclerView == null) {
             throw new NullPointerException("RecyclerView is null!");
         }
@@ -53,7 +53,7 @@ public class PullUpLoadHelper extends RecyclerView.OnScrollListener implements P
         mHeaderFooterRecyclerAdapterWrapper = wrapAdapter(recyclerView.getAdapter());
         mRecyclerView.setAdapter(mHeaderFooterRecyclerAdapterWrapper);
         mLayoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
-        mOnPullUpLoadListener = onPullUpLoadListener;
+        mOnLoadListener = onPullUpLoadListener;
 
         mEndLoadingState = recyclerView.getAdapter().getItemCount() == 0 ? PullUpLoad.STATE_EMPTY : PullUpLoad.STATE_LOADED;
         //默认footer
@@ -78,7 +78,7 @@ public class PullUpLoadHelper extends RecyclerView.OnScrollListener implements P
 
     protected void onScrollToEnd() {
         setLoading();
-        mOnPullUpLoadListener.onLoad();
+        mOnLoadListener.onLoad();
     }
 
     @Override
@@ -140,9 +140,5 @@ public class PullUpLoadHelper extends RecyclerView.OnScrollListener implements P
             adapterWrapper = new HeaderFooterRecyclerAdapterWrapper(adapter);
         }
         return adapterWrapper;
-    }
-
-    @Override
-    public void setOnLoadListener(OnPullUpLoadListener onLoadListener) {
     }
 }

@@ -12,7 +12,6 @@ import com.pei.pulluploadhelper.PullUpLoad;
 import com.pei.pulluploadhelper.PullUpLoadHelper;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -47,7 +46,7 @@ public class PullUploadActivity extends AppCompatActivity {
             }
         });
 
-        mPullUpLoadHelper = new PullUpLoadHelper(mRecyclerView, new PullUpLoad.OnPullUpLoadListener() {
+        mPullUpLoadHelper = new PullUpLoadHelper(mRecyclerView, new PullUpLoad.OnLoadListener() {
             @Override
             public void onLoad() {
                 getNextPage();

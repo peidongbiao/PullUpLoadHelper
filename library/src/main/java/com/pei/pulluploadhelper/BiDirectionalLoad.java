@@ -37,8 +37,4 @@ public interface BiDirectionalLoad extends PullUpLoad {
 
     void setComplete(@Direction int direction);
 
-    interface OnPullDownLoadListener {
-
-        void onLoad();
-    }
 }

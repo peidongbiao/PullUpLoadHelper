@@ -35,9 +35,7 @@ public interface PullUpLoad {
 
     void setComplete();
 
-    void setOnLoadListener(OnPullUpLoadListener onLoadListener);
-
-    interface OnPullUpLoadListener {
+    interface OnLoadListener {
 
         void onLoad();
     }
