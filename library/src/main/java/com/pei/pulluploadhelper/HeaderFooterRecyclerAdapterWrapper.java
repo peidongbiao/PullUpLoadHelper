@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-/**可添加header和footer的装饰器
+/**
+ * 可添加header和footer的装饰器
  * Created by pei on 2017/2/6 0006.
  */
-
 public class HeaderFooterRecyclerAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int BASE_ITEM_TYPE_HEADER = 100000;
     private static final int BASE_ITEM_TYPE_FOOTER = 200000;

@@ -12,25 +12,25 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 
-/**默认加载更多footer实现
+/**
+ * 默认加载更多footer实现
  * Created by peidongbiao on 2017/9/1.
  */
-
-public class DefaultPullLoadFooter extends FrameLayout implements PullUpLoadFooter {
+public class DefaultLoadingIndicator extends FrameLayout implements LoadingIndicator {
 
     protected View mView;
     protected ProgressBar mPbLoading;
     protected TextView mTvText;
 
-    public DefaultPullLoadFooter(Context context) {
+    public DefaultLoadingIndicator(Context context) {
         this(context,null);
     }
 
-    public DefaultPullLoadFooter(Context context, @Nullable AttributeSet attrs) {
+    public DefaultLoadingIndicator(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs,0);
     }
 
-    public DefaultPullLoadFooter(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public DefaultLoadingIndicator(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mView  = LayoutInflater.from(context).inflate(R.layout.defualt_pull_load_footer,this);
         mPbLoading = (ProgressBar) findViewById(R.id.around_pb_loading);

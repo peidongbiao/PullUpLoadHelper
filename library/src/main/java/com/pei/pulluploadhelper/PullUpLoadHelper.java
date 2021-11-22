@@ -3,6 +3,7 @@ package com.pei.pulluploadhelper;
 import android.content.Context;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,19 +11,24 @@ import androidx.recyclerview.widget.RecyclerView;
  * RecyclerView 可以加载更多的helper。在设置完Adapter和LayoutManager后使用，只支持LinearLayoutManger和GridLayoutManager
  * Created by peidongbiao on 2017/9/5.
  */
-
 public class PullUpLoadHelper extends RecyclerView.OnScrollListener implements PullUpLoad {
 
-    private Context mContext;
-    private RecyclerView mRecyclerView;
-    private PullUpLoadFooter mLoadFooter;
-    private PullUpLoad.State mState;
-    private HeaderFooterRecyclerAdapterWrapper mHeaderFooterRecyclerAdapterWrapper;
-    private LinearLayoutManager mLayoutManager;
-    private OnPullUpLoadListener mOnPullUpLoadListener;
+    protected Context mContext;
 
-    private int mLastVisibleItem;
-    private int mTotalItemCount;
+    protected RecyclerView mRecyclerView;
+
+    protected LoadingIndicator mLoadFooter;
+
+    protected @PullUpLoad.State int mState;
+
+    protected HeaderFooterRecyclerAdapterWrapper mHeaderFooterRecyclerAdapterWrapper;
+
+    protected LinearLayoutManager mLayoutManager;
+
+    protected OnPullUpLoadListener mOnPullUpLoadListener;
+
+    protected int mLastVisibleItem;
+    protected int mTotalItemCount;
 
     public PullUpLoadHelper(RecyclerView recyclerView, OnPullUpLoadListener onPullUpLoadListener) {
         if (recyclerView == null) {
@@ -48,33 +54,41 @@ public class PullUpLoadHelper extends RecyclerView.OnScrollListener implements P
         mLayoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
         mOnPullUpLoadListener = onPullUpLoadListener;
 
-        mState = recyclerView.getAdapter().getItemCount() == 0 ? State.EMPTY : State.LOADED;
+        mState = recyclerView.getAdapter().getItemCount() == 0 ? PullUpLoad.STATE_EMPTY : PullUpLoad.STATE_LOADED;
         //默认footer
-        this.setLoadFooter(new DefaultPullLoadFooter(mContext));
+        this.setLoadFooter(new DefaultLoadingIndicator(mContext));
         mRecyclerView.addOnScrollListener(this);
     }
 
     @Override
-    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+    public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
         mLastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
         mTotalItemCount = mLayoutManager.getItemCount();
         if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-            if (mLastVisibleItem == mTotalItemCount - 1 && mState != PullUpLoad.State.LOADING && mState != PullUpLoad.State.COMPLETE && mState != PullUpLoad.State.EMPTY) {
-                setLoading();
-                mOnPullUpLoadListener.onLoad();
+            if (isReachToEnd()) {
+                onScrollToEnd();
             }
         }
     }
 
+    protected boolean isReachToEnd() {
+        return mLastVisibleItem == mTotalItemCount - 1 && mState != PullUpLoad.STATE_LOADING && mState != PullUpLoad.STATE_COMPLETE && mState != PullUpLoad.STATE_EMPTY;
+    }
+
+    protected void onScrollToEnd() {
+        setLoading();
+        mOnPullUpLoadListener.onLoad();
+    }
+
     @Override
-    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
         mLastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
         mTotalItemCount = mLayoutManager.getItemCount();
     }
 
 
     @Override
-    public <T extends View & PullUpLoadFooter> void setLoadFooter(T loadFooter) {
+    public <T extends View & LoadingIndicator> void setLoadFooter(T loadFooter) {
         if (loadFooter == null) {
             throw new NullPointerException("loadFooter is null");
         }
@@ -87,29 +101,29 @@ public class PullUpLoadHelper extends RecyclerView.OnScrollListener implements P
 
     @Override
     public void setEmpty() {
-        mState = PullUpLoad.State.EMPTY;
+        mState = PullUpLoad.STATE_EMPTY;
         mLoadFooter.setEmpty();
     }
 
     @Override
     public void setLoading() {
-        mState = PullUpLoad.State.LOADING;
+        mState = PullUpLoad.STATE_LOADING;
         mLoadFooter.setLoading();
     }
 
     @Override
     public void setLoaded() {
-        mState = PullUpLoad.State.LOADED;
+        mState = PullUpLoad.STATE_LOADED;
         mLoadFooter.setLoaded();
     }
 
     @Override
     public void setComplete() {
-        mState = PullUpLoad.State.COMPLETE;
+        mState = PullUpLoad.STATE_COMPLETE;
         mLoadFooter.setComplete();
     }
 
-    private HeaderFooterRecyclerAdapterWrapper wrapAdapter(RecyclerView.Adapter adapter) {
+    private HeaderFooterRecyclerAdapterWrapper wrapAdapter(RecyclerView.Adapter<?> adapter) {
         HeaderFooterRecyclerAdapterWrapper adapterWrapper;
         if (adapter instanceof HeaderFooterRecyclerAdapterWrapper) {
             adapterWrapper = (HeaderFooterRecyclerAdapterWrapper) adapter;
