@@ -3,7 +3,11 @@ package com.pei.pulluploadhelper;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.Collections;
+import java.util.List;
 
 public class BiDirectionalLoadHelper extends PullUpLoadHelper implements BiDirectionalLoad {
 
@@ -73,12 +77,12 @@ public class BiDirectionalLoadHelper extends PullUpLoadHelper implements BiDirec
 
     @Override
     public void setLoaded() {
-        setLoaded(DIRECTION_END);
+        setLoaded(DIRECTION_END, Collections.emptyList());
     }
 
     @Override
     public void setComplete() {
-        setComplete(DIRECTION_END);
+        setComplete(DIRECTION_END, Collections.emptyList());
     }
 
     @Override
@@ -92,20 +96,27 @@ public class BiDirectionalLoadHelper extends PullUpLoadHelper implements BiDirec
     }
 
     @Override
-    public void setLoaded(@Direction int direction) {
+    public void setLoaded(@Direction int direction, List<?> data) {
         if (direction == DIRECTION_START) {
             mStartLoadingState = STATE_START_LOADED;
             mStartIndicator.setLoaded();
+            if (mFirstVisibleItem == 0) {
+                mRecyclerView.scrollToPosition(getHeaderCount() + data.size());
+            }
+
         } else {
             super.setLoaded();
         }
     }
 
     @Override
-    public void setComplete(@Direction int direction) {
+    public void setComplete(@Direction int direction, List<?> data) {
         if (direction == DIRECTION_START) {
             mStartLoadingState = STATE_START_COMPLETE;
             mStartIndicator.setComplete();
+            if (mFirstVisibleItem == 0) {
+                mRecyclerView.scrollToPosition(getHeaderCount() + data.size());
+            }
         } else {
             super.setComplete();
         }

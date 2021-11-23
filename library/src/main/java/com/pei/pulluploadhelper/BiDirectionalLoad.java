@@ -8,6 +8,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.List;
 
 public interface BiDirectionalLoad extends PullUpLoad {
 
@@ -33,8 +34,8 @@ public interface BiDirectionalLoad extends PullUpLoad {
 
     void setLoading(@Direction int direction);
 
-    void setLoaded(@Direction int direction);
+    void setLoaded(@Direction int direction, List<?> data);
 
-    void setComplete(@Direction int direction);
+    void setComplete(@Direction int direction, List<?> data);
 
 }

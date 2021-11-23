@@ -87,15 +87,12 @@ public class BiDirectionLoadActivity extends AppCompatActivity {
             public void run() {
                 List<Data> data = getNextData(true, mPrePage);
                 mPrePage++;
-
                 mAdapter.addItems(0, data);
-                //mLinearLayoutManager.scrollToPosition(1);
-                mRecyclerView.scrollToPosition(mBiDirectionalLoadHelper.getHeaderCount() + data.size());
 
                 if (mPrePage >= 5) {
-                    mBiDirectionalLoadHelper.setComplete(BiDirectionalLoadHelper.DIRECTION_START);
+                    mBiDirectionalLoadHelper.setComplete(BiDirectionalLoadHelper.DIRECTION_START, data);
                 } else {
-                    mBiDirectionalLoadHelper.setLoaded(BiDirectionalLoadHelper.DIRECTION_START);
+                    mBiDirectionalLoadHelper.setLoaded(BiDirectionalLoadHelper.DIRECTION_START, data);
                 }
             }
         }, 1000);
