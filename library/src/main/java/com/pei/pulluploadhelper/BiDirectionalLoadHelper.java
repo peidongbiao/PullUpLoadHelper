@@ -58,7 +58,7 @@ public class BiDirectionalLoadHelper extends PullUpLoadHelper implements BiDirec
             throw new NullPointerException("endIndicator is null");
         }
         if (mStartIndicator != null) {
-            mHeaderFooterRecyclerAdapterWrapper.removeHeaderView((View) mEndIndicator);
+            mHeaderFooterRecyclerAdapterWrapper.removeHeaderView((View) mStartIndicator);
         }
         this.mStartIndicator = startIndicator;
         mHeaderFooterRecyclerAdapterWrapper.addHeaderView((View) mStartIndicator);

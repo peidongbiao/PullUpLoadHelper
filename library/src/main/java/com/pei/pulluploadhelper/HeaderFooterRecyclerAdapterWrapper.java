@@ -104,8 +104,10 @@ public class HeaderFooterRecyclerAdapterWrapper extends RecyclerView.Adapter<Rec
 
     public void removeHeaderView(View view) {
         int index = mHeaderViews.indexOfValue(view);
-        mHeaderViews.removeAt(index);
-        this.notifyDataSetChanged();
+        if (index != -1) {
+            mHeaderViews.removeAt(index);
+            this.notifyDataSetChanged();
+        }
     }
 
     public void removeHeaderView(int position) {
@@ -120,8 +122,10 @@ public class HeaderFooterRecyclerAdapterWrapper extends RecyclerView.Adapter<Rec
 
     public void removeFooterView(View view) {
         int index = mFootViews.indexOfValue(view);
-        mFootViews.removeAt(index);
-        this.notifyDataSetChanged();
+        if (index != -1) {
+            mFootViews.removeAt(index);
+            this.notifyDataSetChanged();
+        }
     }
 
     public View getHeaderView(int position) {
